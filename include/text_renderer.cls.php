@@ -65,7 +65,12 @@ class Text_Renderer extends Abstract_Renderer {
       array($this->_canvas->get_page_number()), 
       $text
     );*/
-    
+
+    if (strtolower($style->direction) == 'rtl') {
+      preg_match_all('/./us', $text, $ar);
+      $text = join('',array_reverse($ar[0]));
+    }
+
     $this->_canvas->text($x, $y, $text,
                          $font, $size,
                          $style->color, $word_spacing, $char_spacing);
