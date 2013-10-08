@@ -87,6 +87,12 @@ class Image_Renderer extends Block_Renderer {
       $font = $style->font_family;
       $size = $style->font_size;
       $spacing = $style->word_spacing;
+
+      if (strtolower($style->direction) == 'rtl') {
+        preg_match_all('/./us', $alt, $ar);
+        $alt = join('',array_reverse($ar[0]));
+      }
+
       $this->_canvas->text($x, $y, $alt,
                            $font, $size,
                            $style->color, $spacing);
@@ -105,6 +111,10 @@ class Image_Renderer extends Block_Renderer {
       $_y = $alt ? $y+$h-count($parts)*$height : $y;
       
       foreach($parts as $i => $_part) {
+        if (strtolower($style->direction) == 'rtl') {
+          preg_match_all('/./us', $_part, $ar);
+          $_part = join('',array_reverse($ar[0]));
+        }
         $this->_canvas->text($x, $_y + $i*$height, $_part, "times", $height*0.8, array(0.5, 0.5, 0.5));
       }
     }
